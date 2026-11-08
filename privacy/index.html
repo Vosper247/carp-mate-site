@@ -54,7 +54,8 @@
         To use Carp Mate you create an account with an email address and a password. Accounts are
         run by our provider Supabase. Your password is stored only in scrambled (hashed) form, so
         nobody, including us, can read it back. Supabase sends the email that confirms your address
-        and, if you ask for one, the password-reset email. While you are signed in, a sign-in token
+        and, if you ask for one, the password-reset email. While you are signed in, your account also
+        has an internal id, a random code that ties your records to you. A sign-in token
         is kept on your phone so you stay signed in.
       </p>
 
@@ -131,9 +132,10 @@
         A report holds no email address, account id, location, notes, water names or photos, no
         details of your phone beyond that, and no record of what you were doing. There is no screen
         recording. Reports are stored in Sentry’s EU region (Frankfurt, Germany) and kept for up to
-        90 days under Sentry’s retention, then deleted. Sentry sees your phone’s internet (IP)
+        30 days on our current plan, then deleted. Sentry sees your phone’s internet (IP)
         address when a report arrives, as any service does; the app tells it not to record that
-        address with the report.
+        address with the report. The app stores’ privacy forms file crash reports under headings such
+        as “diagnostics” or “analytics”; where they do, this is all that heading covers.
       </p>
 
       <h2>Your backup file</h2>
@@ -213,7 +215,7 @@
         again.
       </p>
       <p>
-        Crash reports are kept by Sentry for up to 90 days, then deleted. They are not tied to your
+        Crash reports are kept by Sentry for up to 30 days on our current plan, then deleted. They are not tied to your
         account, so deleting it does not need to touch them.
       </p>
 
