@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Your account · Carp Mate</title>
+    <link rel="icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      .actions { display: grid; gap: 10px; margin: 24px 0 8px; max-width: 360px; }
+      .button {
+        display: block; text-align: center; text-decoration: none; font-weight: 700; font-size: 18px;
+        padding: 14px 24px; border-radius: 999px; background: var(--accent-soft); color: var(--accent);
+      }
+      .button.primary { background: var(--accent); color: var(--ground); }
+    </style>
+  </head>
+  <body>
+    <header class="site">
+      <div class="wrap">
+        <a class="brand" href="/"><img src="/favicon.png" alt="" />Carp Mate</a>
+        <nav>
+          <a href="/support/">Support</a>
+          <a href="/privacy/">Privacy</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <h1 id="title">Carp Mate</h1>
+      <p class="lead" id="lead"></p>
+      <div class="actions" id="actions"></div>
+      <p class="note" id="note" hidden></p>
+      <noscript><p class="note">This page needs JavaScript to open Carp Mate.</p></noscript>
+      <p class="meta">Stuck? Email <a href="mailto:support@carpmateapp.com">support@carpmateapp.com</a>.</p>
+    </main>
+
+    <footer class="site">
+      <div class="wrap">
+        <a href="/">Home</a> · <a href="/privacy/">Privacy policy</a> ·
+        <a href="mailto:support@carpmateapp.com">support@carpmateapp.com</a>
+      </div>
+    </footer>
+
+    <script type="module">
+      import { platformOf, view } from '/auth/link.js';
+
+      const v = view(location.href, platformOf(navigator.userAgent));
+      // A session handed back by Supabase is never kept or sent anywhere.
+      if (v.scrub) history.replaceState(null, '', location.pathname);
+
+      document.title = `${v.title} · Carp Mate`;
+      document.getElementById('title').textContent = v.title;
+      document.getElementById('lead').textContent = v.lead;
+      const actions = document.getElementById('actions');
+      for (const a of v.actions) {
+        const link = document.createElement('a');
+        link.className = a.primary ? 'button primary' : 'button';
+        link.href = a.href;
+        link.textContent = a.label;
+        actions.append(link);
+      }
+      actions.hidden = v.actions.length === 0;
+      if (v.note) {
+        const note = document.getElementById('note');
+        note.textContent = v.note;
+        note.hidden = false;
+      }
+    </script>
+  </body>
+</html>
