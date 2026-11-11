@@ -81,12 +81,19 @@ export function view(href, platform) {
 
   // Back from Supabase after "Confirm my email here", or sent here as the
   // project's Site URL. A session in the address is wiped either way.
-  const returned = query.get('done') === 'email' || fragment.has('access_token') || fragment.has('error_code');
+  const returned =
+    query.get('done') === 'email' || fragment.has('access_token') || fragment.has('error_code') || query.has('code');
   if (returned) {
     const error = get('error_code') ?? get('error');
     if (error) return { ...EXPIRED, scrub: true };
     const kind = fragment.get('type');
-    if (fragment.get('access_token') && (query.get('done') === 'email' || kind === 'signup' || kind === 'email')) {
+    // An account the app asked for comes back with a ?code= rather than a
+    // session: the code is useless here, but Supabase confirmed the email
+    // before handing it over.
+    const confirmed =
+      (query.get('done') === 'email' && (fragment.has('access_token') || query.has('code'))) ||
+      (fragment.has('access_token') && (kind === 'signup' || kind === 'email'));
+    if (confirmed) {
       return {
         state: 'confirmed',
         title: 'Your email is confirmed',
@@ -95,7 +102,7 @@ export function view(href, platform) {
         scrub: true,
       };
     }
-    if (fragment.get('access_token')) {
+    if (fragment.get('access_token') || query.has('code')) {
       return {
         state: 'empty',
         title: 'Nothing to do here',

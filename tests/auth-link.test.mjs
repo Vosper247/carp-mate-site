@@ -94,3 +94,14 @@ test('sent here as the Site URL: a confirmation is still recognised, and any ses
   assert.equal(JSON.stringify(other).includes('SECRET'), false);
   assert.equal(view(`${PAGE}#error=access_denied&error_code=otp_expired`, 'android').title, 'That link has expired');
 });
+
+// 11 Nov: a sign-up the app asked for carries a pkce_ token. Confirmed in a
+// browser, Supabase answers with ?code=, not a session. That is the usual
+// case: sign up on the phone, read the email on a laptop.
+test('confirmed on a computer for an account the app asked for: says confirmed, wipes the code', () => {
+  const v = view(`${PAGE}?done=email&code=SECRET-CODE`, 'computer');
+  assert.equal(v.title, 'Your email is confirmed');
+  assert.equal(v.scrub, true);
+  assert.equal(JSON.stringify(v).includes('SECRET-CODE'), false);
+  assert.equal(view(`${PAGE}?code=X`, 'computer').scrub, true);
+});
