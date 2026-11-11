@@ -84,3 +84,13 @@ test('the token never goes to a server: it rides in the fragment', () => {
   }
   assert.ok(!confirmHereLink('H').startsWith(PAGE));
 });
+
+test('sent here as the Site URL: a confirmation is still recognised, and any session wiped', () => {
+  const v = view(`${PAGE}#access_token=SECRET&refresh_token=R&type=signup`, 'computer');
+  assert.equal(v.title, 'Your email is confirmed');
+  assert.equal(v.scrub, true);
+  const other = view(`${PAGE}#access_token=SECRET&type=magiclink`, 'computer');
+  assert.equal(other.scrub, true);
+  assert.equal(JSON.stringify(other).includes('SECRET'), false);
+  assert.equal(view(`${PAGE}#error=access_denied&error_code=otp_expired`, 'android').title, 'That link has expired');
+});

@@ -79,15 +79,27 @@ export function view(href, platform) {
   const fragment = paramsOf(url.hash);
   const get = (k) => fragment.get(k) ?? query.get(k);
 
-  // Back from Supabase after "Confirm my email here".
-  if (query.get('done') === 'email') {
+  // Back from Supabase after "Confirm my email here", or sent here as the
+  // project's Site URL. A session in the address is wiped either way.
+  const returned = query.get('done') === 'email' || fragment.has('access_token') || fragment.has('error_code');
+  if (returned) {
     const error = get('error_code') ?? get('error');
     if (error) return { ...EXPIRED, scrub: true };
-    if (fragment.get('access_token')) {
+    const kind = fragment.get('type');
+    if (fragment.get('access_token') && (query.get('done') === 'email' || kind === 'signup' || kind === 'email')) {
       return {
         state: 'confirmed',
         title: 'Your email is confirmed',
         lead: 'Open Carp Mate on your phone and sign in with your email and password.',
+        actions: [],
+        scrub: true,
+      };
+    }
+    if (fragment.get('access_token')) {
+      return {
+        state: 'empty',
+        title: 'Nothing to do here',
+        lead: 'Open Carp Mate on your phone to carry on.',
         actions: [],
         scrub: true,
       };
