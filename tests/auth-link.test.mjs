@@ -19,7 +19,7 @@ test('a confirm link on a phone opens the app, with confirming here as the way r
   const v = view(confirm, 'android');
   assert.equal(v.title, 'Confirm your email');
   assert.deepEqual(labels(v), ['*Open Carp Mate', 'Confirm my email here']);
-  assert.match(v.actions[0].href, /^intent:\/\/auth-callback\?token_hash=HASH1&type=email#Intent;scheme=fishingweatherapp;package=com\.vosper247\.fishingweatherapp;/);
+  assert.match(v.actions[0].href, /^intent:\/\/auth-callback\?token_hash=HASH1&type=email#Intent;scheme=fishingweatherapp;package=com\.carpmateapp\.app;/);
   assert.equal(view(confirm, 'ios').actions[0].href, 'fishingweatherapp://auth-callback?token_hash=HASH1&type=email');
 });
 

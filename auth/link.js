@@ -19,7 +19,7 @@
 export const SUPABASE_URL = 'https://spnsjzjfqbxhqfggctfy.supabase.co';
 export const PAGE_URL = 'https://carpmateapp.com/auth/';
 const SCHEME = 'fishingweatherapp';
-const ANDROID_PACKAGE = 'com.vosper247.fishingweatherapp';
+const ANDROID_PACKAGE = 'com.carpmateapp.app';
 
 /** The two kinds of link the emails send, keyed by Supabase's token type. */
 const KINDS = {
