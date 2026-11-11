@@ -29,7 +29,7 @@ test('a confirm link on a computer confirms here and says to sign in on the phon
   assert.match(v.lead, /open Carp Mate on your phone and sign in/);
   assert.equal(
     v.actions[0].href,
-    'https://spnsjzjfqbxhqfggctfy.supabase.co/auth/v1/verify?token=HASH1&type=email&redirect_to=' +
+    'https://spnsjzjfqbxhqfggctfy.supabase.co/auth/v1/verify?token=HASH1&type=signup&redirect_to=' +
       encodeURIComponent(`${PAGE}?done=email`)
   );
 });

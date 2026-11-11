@@ -52,12 +52,17 @@ export function appLink(type, tokenHash, platform) {
   );
 }
 
-/** Confirms a sign-up in the browser; Supabase then sends the browser back here. */
+/**
+ * Confirms a sign-up in the browser; Supabase then sends the browser back here.
+ * The type is `signup`, as in Supabase's own confirmation links: with `email`,
+ * a token the app asked for (pkce_…) gets an HTTP 500 from this endpoint
+ * (found 11 Nov). `signup` serves both kinds of token.
+ */
 export function confirmHereLink(tokenHash) {
   const back = `${PAGE_URL}?done=email`;
   return (
     `${SUPABASE_URL}/auth/v1/verify?token=${encodeURIComponent(tokenHash)}` +
-    `&type=email&redirect_to=${encodeURIComponent(back)}`
+    `&type=signup&redirect_to=${encodeURIComponent(back)}`
   );
 }
 
